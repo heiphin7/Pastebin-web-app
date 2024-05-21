@@ -12,6 +12,7 @@ import pastebin.mainservice.entity.User;
 import pastebin.mainservice.repo.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,12 +26,12 @@ public class UserDetailService implements UserDetailsService {
         User user = userRepository.findByUsername(username).orElseThrow
                 (() -> new UsernameNotFoundException(String.format("Пользователь %s найден", username)));
 
-        List<GrantedAuthority> default_Roles = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-
         return new org.springframework.security.core.userdetails.User( // User in Spring security
                 user.getUsername(),
                 user.getPassword(),
-                default_Roles // authorities
+                user.getRoles().stream().map(
+                        role -> new SimpleGrantedAuthority(role.getName())
+                ).collect(Collectors.toList()) // authorities
         );
     }
 

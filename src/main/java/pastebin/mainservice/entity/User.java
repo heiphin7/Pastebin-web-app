@@ -3,6 +3,9 @@ package pastebin.mainservice.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Collection;
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "users")
@@ -20,5 +23,13 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name ="user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles;
 
 }
