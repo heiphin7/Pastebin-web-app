@@ -1,6 +1,7 @@
 package pastebin.mainservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,14 +11,15 @@ import org.springframework.stereotype.Service;
 import pastebin.mainservice.dto.AuthenticationRequestDto;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public String authenticateUser(AuthenticationRequestDto dto) {
 
         try {
+
             // Аутентификация пользовталея с помощью сервиса authentication
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -31,9 +33,9 @@ public class AuthenticationService {
 
             return "Авторизация прошла успешно!";
         } catch (BadCredentialsException ex) {
-            return "Неправильный пароль!";
+            return "Имя пользователя или пароль неправильный!";
         }catch (Exception e){
-            return "loginpage";
+            return "Имя пользователя не найдено!";
         }
 
     }
