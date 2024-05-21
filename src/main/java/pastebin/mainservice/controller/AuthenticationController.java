@@ -17,6 +17,6 @@ public class AuthenticationController {
     // future endpoint for authenticate user
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(AuthenticationRequestDto userDto) {
-        return ResponseEntity.ok("test");
+        return ResponseEntity.ok(authenticationService.authenticateUser(userDto));
     }
 }
