@@ -7,12 +7,14 @@ import org.springframework.util.StringUtils;
 import pastebin.mainservice.dto.RegistrationUserDto;
 import pastebin.mainservice.entity.User;
 import pastebin.mainservice.mapper.UserMapper;
+import pastebin.mainservice.repo.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class RegistrationService {
 
     private final BCryptPasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
     private final UserService userService;
     private final UserMapper userMapper;
 
@@ -35,7 +37,12 @@ public class RegistrationService {
             return "Введите корректный email";
         }
 
-        User userToSave = userMapper.registrationToUser(userDto);
+
+        User userToSave = userMapper.registrationToUser(
+                userDto.getUsername(), userDto.getEmail(), passwordEncoder.encode(userDto.getPassword())
+        );
+
+        userRepository.save(userToSave);
         return "Пользователь успешно сохранен!";
     }
 

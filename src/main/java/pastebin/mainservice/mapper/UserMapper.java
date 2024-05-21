@@ -8,11 +8,11 @@ import pastebin.mainservice.entity.User;
 public class UserMapper {
 
 
-    public User registrationToUser(RegistrationUserDto registrationUserDto) {
+    public User registrationToUser(String username, String email, String password) {
         User user = new User();
-        user.setUsername(registrationUserDto.getUsername());
-        user.setEmail(registrationUserDto.getEmail());
-        user.setPassword(registrationUserDto.getPassword());
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
 
         return user;
     }
