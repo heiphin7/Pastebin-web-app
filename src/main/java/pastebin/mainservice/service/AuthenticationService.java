@@ -6,25 +6,33 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pastebin.mainservice.dto.AuthenticationRequestDto;
 
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    private final UserDetailService userDetailService;
 
     public String authenticateUser(AuthenticationRequestDto dto) {
-
         try {
+            UserDetails userDetails = userDetailService.loadUserByUsername(dto.getUsername());
 
             // Аутентификация пользовталея с помощью сервиса authentication
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             dto.getUsername(),
-                            dto.getPassword()
+                            dto.getPassword(),
+                            userDetails.getAuthorities()
                     )
             );
 
@@ -33,11 +41,9 @@ public class AuthenticationService {
 
             return "Авторизация прошла успешно!";
         } catch (BadCredentialsException ex) {
-            return "Имя пользователя или пароль неправильный!";
+            return "Неправильный пароль!";
         }catch (Exception e){
             return "Имя пользователя не найдено!";
         }
-
     }
-
 }
