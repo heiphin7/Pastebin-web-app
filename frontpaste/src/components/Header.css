@@ -1,6 +1,29 @@
 .header {
-    background-color: #282c34;
-    padding: 20px;
-    color: white;
-    text-align: center;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.753);
+  padding: 10px 20px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.logo img {
+  height: 40px;
+}
+
+.github-icon a {
+  color: white;
+  text-decoration: none;
+}
+
+.github-icon a:hover {
+  color: #bbb;
+}
+
+.github-icon {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
