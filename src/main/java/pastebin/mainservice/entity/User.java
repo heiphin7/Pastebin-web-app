@@ -3,7 +3,6 @@ package pastebin.mainservice.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -31,5 +30,14 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
+
+    @OneToMany
+    @JoinTable(
+            name = "user_pastes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "paste_id")
+    )
+    private List<Paste> pastes;
+
 
 }
