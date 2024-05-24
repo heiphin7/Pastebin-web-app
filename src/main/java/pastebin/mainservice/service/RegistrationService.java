@@ -1,6 +1,8 @@
 package pastebin.mainservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,35 +20,31 @@ public class RegistrationService {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    public String saveUser(RegistrationUserDto userDto) {
+    public String saveUser(RegistrationUserDto userDto) throws NullPointerException, BadCredentialsException, BadRequestException {
 
         /* Сначала идет проверка на null, затем только isBlank
         *  Так как если в isBlank закинуть null-объект, будет ошибка                                                                                                                                                    */
 
         if (userDto.getUsername() == null || userDto.getPassword() == null
                 || userDto.getEmail() == null || userDto.getConfirmPassword() == null) {
-            System.out.println(userDto.getUsername());
-            System.out.println(userDto.getEmail());
-            System.out.println(userDto.getPassword());
-            System.out.println(userDto.getConfirmPassword());
-            return "Все поля должны быть заполнены!";
+            throw new NullPointerException();
         }
 
         if (userDto.getUsername().isBlank() || userDto.getPassword().isBlank()
             || userDto.getEmail().isBlank() || userDto.getConfirmPassword().isBlank()) {
-            return "Все поля должны быть заполнены!";
+            throw new NullPointerException();
         }
 
         if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
-           return "Пароли не совпадают!";
+           throw new BadCredentialsException("Пароли не совпадают");
         }
 
         if (userService.findByUsername(userDto.getUsername()) != null) {
-            return "Имя пользователя занято!";
+            throw new BadRequestException("Имя пользователя занято");
         }
 
         if (!isValidEmail(userDto.getEmail())) {
-            return "Введите корректный email";
+            throw new IllegalArgumentException("Некорректный формат электронной почты");
         }
 
 
