@@ -17,13 +17,24 @@ public class PasteService {
     private final PasteRepository repository;
     private final UserRepository userRepository;
 
-    public void save(Paste paste) {
+    public void save(Paste paste) throws NullPointerException{
+
+        if(checkAllFields(paste)) {
+            throw new NullPointerException();
+        }
+
         repository.save(paste);
     }
 
-    public Paste findById(Long id) {
+    public Paste findById(Long id) throws ChangeSetPersister.NotFoundException {
         // if dont founded, just return null & handling in pasteController
-        return repository.findById(id).orElse(null);
+        Paste paste = repository.findById(id).orElse(null);
+
+        if(paste == null) {
+            throw new ChangeSetPersister.NotFoundException();
+        }
+
+        return paste;
     }
 
     public void deleteById(Long paste_id, Long user_id) throws ChangeSetPersister.NotFoundException, AccessDeniedException{
@@ -56,5 +67,11 @@ public class PasteService {
 
         // just use save method, cause JpaRepo authomaticly change old paste
         repository.save(newPaste);
+    }
+
+
+    public boolean checkAllFields(Paste paste) {
+        return paste.getAuthor() == null || paste.getContent().isBlank() ||
+                paste.getCreatedDate() == null || paste.getExpirationDate() == null;
     }
 }

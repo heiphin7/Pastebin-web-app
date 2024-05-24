@@ -14,6 +14,8 @@ public class RegistrationController {
 
     private final RegistrationService registrationService;
 
+    // TODO CUSTOM ERROR & SUCCES ENTITES FOR HTTP RESPONSE
+
     @PostMapping("/save")
     public ResponseEntity<?> saveNewUser(@RequestBody RegistrationUserDto userDto) {
         return ResponseEntity.ok(registrationService.saveUser(userDto));

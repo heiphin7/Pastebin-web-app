@@ -14,6 +14,8 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+    // TODO CUSTOM ERROR & SUCCES ENTITES FOR HTTP RESPONSE
+
     // future endpoint for authenticate user
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDto userDto) {
