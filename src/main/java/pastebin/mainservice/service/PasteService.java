@@ -3,7 +3,6 @@ package pastebin.mainservice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import pastebin.mainservice.entity.Paste;
 import pastebin.mainservice.entity.User;
 import pastebin.mainservice.repo.PasteRepository;
@@ -47,6 +46,15 @@ public class PasteService {
         repository.delete(paste);
     }
 
+    public void updatePaste(Long oldPasteId, Paste newPaste) throws ChangeSetPersister.NotFoundException {
+        // before make changes, find paste
+        Paste paste = repository.findById(oldPasteId).orElse(null);
 
+        if(paste == null) {
+            throw new ChangeSetPersister.NotFoundException();
+        }
 
+        // just use save method, cause JpaRepo authomaticly change old paste
+        repository.save(newPaste);
+    }
 }
