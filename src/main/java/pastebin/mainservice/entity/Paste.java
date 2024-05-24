@@ -13,6 +13,9 @@ public class Paste {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "title")
+    private String title;
+
     @Lob // for CLOB (Character large Object)
     @Column(name = "Link to content")
     private String Content;

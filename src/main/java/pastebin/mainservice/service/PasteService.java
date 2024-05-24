@@ -23,6 +23,10 @@ public class PasteService {
             throw new NullPointerException();
         }
 
+        if (paste.getAuthor() == null) {
+            throw new IllegalArgumentException("Автор не может быть null");
+        }
+
         repository.save(paste);
     }
 
@@ -49,7 +53,7 @@ public class PasteService {
 
         User user = userRepository.findById(user_id).orElse(null);
 
-        if(user == null) {
+        if(user == null || paste.getAuthor() == null || !paste.getAuthor().equals(user)) {
             throw new AccessDeniedException("Paste принадлежит не пользователю");
         }
 
