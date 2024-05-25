@@ -1,0 +1,134 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
+  
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('./assets/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .icon-header {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .input-group {
+    width: 100%;
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  button[type="submit"] {
+    width: 50%;
+    padding: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  .or-divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    width: 100%;
+  }
+  
+  .divider {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #ccc;
+  }
+  
+  .or-text {
+    margin: 0 10px;
+    white-space: nowrap;
+  }
+  
+  .social-login {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+  }
+  
+  .social-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+  }
+  
+  .social-button.google-login {
+    color: #db4437;
+  }
+  
+  .social-button.github-login {
+    color: #333;
+  }
+  
+  .register-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .register-link button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .register-link button:hover {
+    text-decoration: underline;
+  }
+  
+  .message {
+    text-align: center;
+    margin-top: 20px;
+    color: red;
+  }
+  
+  
