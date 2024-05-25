@@ -15,4 +15,7 @@ public class Role {
     @Column(name = "name")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }
