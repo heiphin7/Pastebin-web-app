@@ -15,15 +15,17 @@ import pastebin.mainservice.service.RegistrationService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/reigstration/")
+@RequestMapping("/v1/registration")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
-    private final String currentPath = "";
+    private final String currentPath = "/api/v1/registration";
     @PostMapping("/save")
     public ResponseEntity<?> saveNewUser(@RequestBody RegistrationUserDto userDto) {
         try {
-            return ResponseEntity.ok(registrationService.saveUser(userDto));
+            String message = registrationService.saveUser(userDto);
+
+            return new ResponseEntity<>(new ApplicationError(HttpStatus.OK.value(), message, "/api/v1/registration/save"), HttpStatus.OK);
         } catch (NullPointerException exception) {
             return new ResponseEntity<>(new ApplicationError(HttpStatus.BAD_REQUEST.value(), "Все поля должны быть заполнены!", "NullError", currentPath + "/save"), HttpStatus.BAD_REQUEST);
         } catch (BadCredentialsException exception) {
