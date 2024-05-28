@@ -8,11 +8,15 @@ import java.util.Date;
 public class ApplicationError {
 
     private String message;
-    private int code;
+    private int httpStatus;
+    private String path;
+    private String errorType;
     private Date timeStamp;
 
-    public ApplicationError(int code, String message) {
-        this.code = code;
+    public ApplicationError(int code, String message, String errorType, String path) {
+        this.httpStatus = code;
+        this.path = path;
+        this.errorType = errorType;
         this.message = message;
         this.timeStamp = new Date();
     }
