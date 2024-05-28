@@ -26,6 +26,7 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDto userDto) {
         try {
+            authenticationService.authenticateUser(userDto);
             return new ResponseEntity<>(new ApplicationError(HttpStatus.OK.value(), "Авторизация прошла успешно!", currentPath + "/authenticate"), HttpStatus.OK);
         } catch (BadCredentialsException exception) {
             return new ResponseEntity<>(new ApplicationError(HttpStatus.UNAUTHORIZED.value(), "Неправильный пароль!", "AuthenticationError", currentPath + "/authenticate"), HttpStatus.UNAUTHORIZED);

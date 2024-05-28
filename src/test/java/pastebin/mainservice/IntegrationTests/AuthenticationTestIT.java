@@ -7,8 +7,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
-import pastebin.mainservice.controller.AuthenticationController;
 import pastebin.mainservice.dto.AuthenticationRequestDto;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -35,6 +33,7 @@ class AuthenticationTestIT {
         dto.setPassword("12341234");
 
         String requestDtoJSON = objectMapper.writeValueAsString(dto);
+
         // when
         mockMvc.perform(post("/v1/authentication/authenticate")
                 // send AuthenticationRequestDto to endpoint, and set type to json
@@ -43,6 +42,27 @@ class AuthenticationTestIT {
 
                 // then
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void Authenticate_WrongPasswordUser_Returns400Expcetion() throws Exception {
+        //given
+        // user in first test case, but with wrong password
+        AuthenticationRequestDto dto = new AuthenticationRequestDto();
+        dto.setUsername("heiphin7");
+        dto.setPassword("wrongPassword");
+
+        // convert to JSON
+        String requestDtoJson = objectMapper.writeValueAsString(dto);
+
+        // when
+        mockMvc.perform(post("/v1/authentication/authenticate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestDtoJson))
+
+                // then
+                .andExpect(status().isUnauthorized()) // unauthorized, cause: wrong password
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 }

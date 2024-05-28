@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pastebin.mainservice.dto.AuthenticationRequestDto;
 
+import static org.springframework.data.crossstore.ChangeSetPersister.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -19,12 +21,12 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailService userDetailService;
 
-    public String authenticateUser(AuthenticationRequestDto dto) throws BadCredentialsException, ChangeSetPersister.NotFoundException {
+    public void authenticateUser(AuthenticationRequestDto dto) throws BadCredentialsException, NotFoundException {
 
             UserDetails userDetails = userDetailService.loadUserByUsername(dto.getUsername());
 
             if(userDetails == null) {
-                throw new ChangeSetPersister.NotFoundException();
+                throw new NotFoundException();
             }
 
             // Аутентификация пользовталея с помощью сервиса authentication
@@ -38,7 +40,5 @@ public class AuthenticationService {
 
             // Установка аутентифицированного пользователя в контекст безопасности
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            return "Авторизация прошла успешно!";
     }
 }
