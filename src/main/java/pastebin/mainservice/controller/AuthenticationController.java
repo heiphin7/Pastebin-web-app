@@ -13,7 +13,6 @@ import pastebin.mainservice.dto.AuthenticationRequestDto;
 import pastebin.mainservice.error.ApplicationError;
 import pastebin.mainservice.service.AuthenticationService;
 
-import static org.springframework.data.crossstore.ChangeSetPersister.*;
 
 @RestController
 @RequiredArgsConstructor

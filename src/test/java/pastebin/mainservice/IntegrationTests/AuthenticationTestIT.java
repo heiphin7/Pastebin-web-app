@@ -10,8 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import pastebin.mainservice.dto.AuthenticationRequestDto;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc(printOnlyOnFailure = false) // Для просмотра запросы/ответы в тестах
@@ -41,8 +40,16 @@ class AuthenticationTestIT {
                 .content(requestDtoJSON))
 
                 // then
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpectAll(
+                        status().isOk(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+
+                        // check all parametres of json response
+                        jsonPath("$.message").value("Авторизация прошла успешно!"),
+                        jsonPath("$.httpStatus").value(200),
+                        jsonPath("$.path").value("/api/v1/authentication/authenticate"),
+                        jsonPath("$.errorType").value("Success")
+                );
     }
 
     @Test
@@ -62,8 +69,15 @@ class AuthenticationTestIT {
                 .content(requestDtoJson))
 
                 // then
-                .andExpect(status().isUnauthorized()) // unauthorized, cause: wrong password
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+         .andExpectAll(
+                status().isUnauthorized(), // we wait unauthorized, cause: wrong password
+                content().contentType(MediaType.APPLICATION_JSON),
+
+                // check all parametres of json response
+                jsonPath("$.message").value("Неправильный пароль!"),
+                jsonPath("$.httpStatus").value(401),
+                jsonPath("$.path").value("/api/v1/authentication/authenticate"),
+                jsonPath("$.errorType").value("AuthenticationError"));
     }
 
     @Test
@@ -83,7 +97,15 @@ class AuthenticationTestIT {
                 .content(requestDtoJson))
 
                 // then
-                .andExpect(status().isNotFound())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpectAll(
+                        status().isBadRequest(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+
+                        // check all parametres of json response
+                        jsonPath("$.message").value("Имя пользователя не найдено!"),
+                        jsonPath("$.httpStatus").value(400),
+                        jsonPath("$.path").value("/api/v1/authentication/authenticate"),
+                        jsonPath("$.errorType").value("NotFoundError")
+                );
     }
 }
