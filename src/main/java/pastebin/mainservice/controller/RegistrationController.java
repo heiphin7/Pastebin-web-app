@@ -7,32 +7,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pastebin.mainservice.dto.RegistrationUserDto;
+import pastebin.mainservice.error.ApplicationError;
 import pastebin.mainservice.service.RegistrationService;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/v1/reigstration/")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
-
-    // TODO CUSTOM ERROR & SUCCES ENTITES FOR HTTP RESPONSE
-
+    private final String currentPath = "";
     @PostMapping("/save")
     public ResponseEntity<?> saveNewUser(@RequestBody RegistrationUserDto userDto) {
         try {
             return ResponseEntity.ok(registrationService.saveUser(userDto));
         } catch (NullPointerException exception) {
-            return new ResponseEntity<>("Все поля должны быть заполнены!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApplicationError(HttpStatus.BAD_REQUEST.value(), "Все поля должны быть заполнены!", "NullError", currentPath + "/save"), HttpStatus.BAD_REQUEST);
         } catch (BadCredentialsException exception) {
-            return new ResponseEntity<>("Пароли не совпадают", HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(new ApplicationError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают!", "PasswordsNotMatches", currentPath + "/save"), HttpStatus.BAD_REQUEST);
         } catch (IllegalArgumentException exception) {
-            return new ResponseEntity<>("Введите корректную почту", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new ApplicationError(HttpStatus.BAD_REQUEST.value(), "Введите корректную почту!", "EmailError", currentPath + "/save"), HttpStatus.BAD_REQUEST);
         } catch (BadRequestException exception) {
-            return new ResponseEntity<>("Имя пользователя уже занято!", HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new ApplicationError(HttpStatus.BAD_REQUEST.value(), "Имя пользователя занято!", "UsernameIsTaken", currentPath + "/save"), HttpStatus.BAD_REQUEST);
         } catch (Exception exception) {
-            return new ResponseEntity<>("Произошла какая-то ошибка", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ApplicationError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Произошла какая-то ошибка", "ServerError", currentPath + "/save"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
