@@ -1,7 +1,6 @@
 package pastebin.mainservice.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,14 +11,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pastebin.mainservice.dto.AuthenticationRequestDto;
 
-import java.nio.file.AccessDeniedException;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
     private final UserDetailService userDetailService;
 
     public String authenticateUser(AuthenticationRequestDto dto) throws BadCredentialsException, ChangeSetPersister.NotFoundException {
