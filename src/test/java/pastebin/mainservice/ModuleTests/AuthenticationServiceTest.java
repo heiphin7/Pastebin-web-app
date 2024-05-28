@@ -1,4 +1,4 @@
-package pastebin.mainservice;
+package pastebin.mainservice.ModuleTests;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import pastebin.mainservice.dto.AuthenticationRequestDto;
 import pastebin.mainservice.service.AuthenticationService;
 
 @SpringBootTest
-public class AuthenticationServiceTest {
+class AuthenticationServiceTest {
 
     @Mock
     private AuthenticationService authenticationService;
@@ -23,7 +23,7 @@ public class AuthenticationServiceTest {
     private AuthenticationController authenticationController;
 
     @Test
-    public void Authentication_ReturnsSuccesAuthentication() throws Exception{
+    void Authentication_ReturnsSuccesAuthentication() throws Exception{
         // given
         AuthenticationRequestDto dto = new AuthenticationRequestDto();
         dto.setUsername("testUser");
@@ -35,10 +35,9 @@ public class AuthenticationServiceTest {
         // when
         ResponseEntity<?> responseEntity = this.authenticationController.authenticate(dto);
 
-        System.out.println(responseEntity);
-
-        // then
+        // then (Сравнение результатов с ожиадемыми)
         Assertions.assertNotNull(responseEntity);
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assertions.assertEquals("Авторизация прошла успешно!", responseEntity.getBody());
     }
 }
