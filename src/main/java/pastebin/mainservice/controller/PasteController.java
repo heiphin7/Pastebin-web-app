@@ -40,7 +40,7 @@ public class PasteController {
         } catch (ChangeSetPersister.NotFoundException exception) {
             return new ResponseEntity<>(new ApplicationError(HttpStatus.NOT_FOUND.value(), "Paste с id=" + id + " не найден!", "NotFoundError" , currentPath + "/find/" + id), HttpStatus.NOT_FOUND);
         } catch (Exception exception) { // HTTP 500
-            return new ResponseEntity<>(new ApplicationError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Произошла какая-то ошибка" , "ServerError", currentPath + "/find/" + id), HttpStatus.INTERNAL_SERVER_ERROR)
+            return new ResponseEntity<>(new ApplicationError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Произошла какая-то ошибка" , "ServerError", currentPath + "/find/" + id), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -53,7 +53,7 @@ public class PasteController {
         } catch (ChangeSetPersister.NotFoundException exception) {
             return new ResponseEntity<>(new ApplicationError(HttpStatus.NOT_FOUND.value(), "Paste не найден!", "NotFoundError", currentPath + "/change"), HttpStatus.NOT_FOUND);
         } catch (Exception exception) { // HTTP 500
-            return new ResponseEntity<>(new ApplicationError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Произошла какая-то ошибка" , "ServerError", currentPath + "/change"), HttpStatus.INTERNAL_SERVER_ERROR)
+            return new ResponseEntity<>(new ApplicationError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Произошла какая-то ошибка" , "ServerError", currentPath + "/change"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -68,7 +68,7 @@ public class PasteController {
             // Когда пользователь пытается удалить чужой paste
             return new ResponseEntity<>(new ApplicationError(HttpStatus.FORBIDDEN.value(), "Вы не можете удалять чужие посты" , "ForbiddenError" , currentPath + "/delete/" + paste_id), HttpStatus.FORBIDDEN);
         } catch (Exception exception) { // HTTP 500
-            return new ResponseEntity<>(new ApplicationError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Произошла какая-то ошибка" , "ServerError", currentPath + "/delete/" + paste_id), HttpStatus.INTERNAL_SERVER_ERROR)
+            return new ResponseEntity<>(new ApplicationError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Произошла какая-то ошибка" , "ServerError", currentPath + "/delete/" + paste_id), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
