@@ -24,7 +24,7 @@ class AuthenticationTestIT {
     private ObjectMapper objectMapper;
 
     @Test
-    void Authenticate_ReturnsSuccesAuthentication() throws Exception{
+    void AuthenticateUserWithSuccesCredentionals() throws Exception{
         // given
 
         // example user for authentication
@@ -46,14 +46,14 @@ class AuthenticationTestIT {
     }
 
     @Test
-    void Authenticate_WrongPasswordUser_Returns400Expcetion() throws Exception {
+    void AuthenticateUserWithWrongPassword() throws Exception {
         //given
         // user in first test case, but with wrong password
         AuthenticationRequestDto dto = new AuthenticationRequestDto();
         dto.setUsername("heiphin7");
         dto.setPassword("wrongPassword");
 
-        // convert to JSON
+        // convert dto to JSON
         String requestDtoJson = objectMapper.writeValueAsString(dto);
 
         // when
@@ -63,6 +63,27 @@ class AuthenticationTestIT {
 
                 // then
                 .andExpect(status().isUnauthorized()) // unauthorized, cause: wrong password
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void AuthenticateUsernameNotFound() throws Exception{
+        // given
+        AuthenticationRequestDto dto = new AuthenticationRequestDto();
+        // user, not exist in db
+        dto.setUsername("aslkdfja;djfn;kawjdknf;alksjd;alkwjsd;alwkjdfefg");
+        dto.setPassword("some password");
+
+        // convert dto to JSON
+        String requestDtoJson = objectMapper.writeValueAsString(dto);
+
+        // when
+        mockMvc.perform(post("/v1/authentication/authenticate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestDtoJson))
+
+                // then
+                .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 }

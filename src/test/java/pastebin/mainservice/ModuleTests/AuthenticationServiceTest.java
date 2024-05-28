@@ -29,7 +29,6 @@
 //        AuthenticationRequestDto dto = new AuthenticationRequestDto();
 //        dto.setUsername("testUser");
 //        dto.setPassword("testPassword");
-//
 //        // Имитация поведения мока, в данном случае authenticationSerivce
 //        Mockito.when(authenticationService.authenticateUser(dto)).thenReturn("Авторизация прошла успешно!");
 //
